@@ -1,7 +1,5 @@
-<<<<<<< HEAD
 .vscode
 htmlcov
 .coverage
-=======
-.vscode
->>>>>>> create binary search
+__pycache__
+.*_cache

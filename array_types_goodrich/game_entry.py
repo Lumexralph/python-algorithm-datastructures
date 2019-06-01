@@ -23,7 +23,7 @@ class ScoreBoard:
 
            All entries are initially None.
         """
-        
+
         self._board = [None] * capacity                     # reserve space for future scores
         self._n = 0                                         # number of actual entries
 
@@ -48,13 +48,13 @@ class ScoreBoard:
         if good:
             if self._n < len(self._board):                     # no score drops from list, there is still place for new entries
                 self._n += 1                                   # increase the overall entries count
-            
+
             # shift lower scores rightward to make room for new entry
             j = self._n - 1                                    # index of last element in the list
             while j > 0 and self._board[j - 1].get_score() < score:
                 self._board[j] = self._board[j - 1]            # shift entry to the right to make space for the new entry
                 j -= 1
-            
+
             # when the slot and space has been created,
             # slot in the new entry
             self._board[j] = entry

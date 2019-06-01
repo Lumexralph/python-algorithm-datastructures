@@ -23,8 +23,10 @@ class DynamicArray(object):
         return self._n
 
     def __getitem__(self, k):
-        """Return element at index k."""
-        if not 0 <= k < self._n:
+        """Return element at index k.
+        either a positive or negative
+        """
+        if (0 > k > self._n):
             raise IndexError('invalid index')
         return self._A[k]                           # get the element from the array
 

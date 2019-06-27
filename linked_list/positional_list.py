@@ -273,3 +273,71 @@ class FavouritesList:
             item = walk.element()                                           # element of list is Item
             yield item._value                                               # using the customized __iter__ method
             walk = self._data.after(walk)
+
+        
+"""
+The previous implementation of a favorites list performs the access(e) method 
+in time proportional to the index of e in the favorites list. 
+That is, if e is the kth most popular element in the favorites list,
+then accessing it takes O(k) time. In many real-life access sequences (e.g., Web pages visited by a user),
+once an element is accessed it is more likely to be accessed again in the near future. 
+Such scenarios are said to possess locality of reference.
+A heuristic, or rule of thumb, that attempts to take advantage of the locality of reference
+ that is present in an access sequence is the move-to-front heuristic. To apply this heuristic, 
+ each time we access an element we move it all the way to the front of the list. Our hope, of course, 
+ is that this element will be accessed again in the near future. Consider, for example, 
+ 
+ a scenario in which we have n elements and the following series of n2 accesses:
+• element 1 is accessed n times • element 2 is accessed n times
+• element n is accessed n times.
+If we store the elements sorted by their access counts, inserting each element the first time it is accessed, then
+• each access to element 1 runs in O(1) time
+• each access to element 2 runs in O(2) time
+• each access to element n runs in O(n) time.
+Thus, the total time for performing the series of accesses is proportional to
+n+2n+3n+···+n·n = n(1+2+3+···+n) = n· n(n+1), 2
+which is O(n3).
+
+On the other hand, if we use the move-to-front heuristic, inserting each element
+the first time it is accessed, then
+• each subsequent access to element 1 takes O(1) time
+• each subsequent access to element 2 takes O(1) time
+• each subsequent access to element n runs in O(1) time.
+So the running time for performing all the accesses in this case is O(n2). 
+Thus, the move-to-front implementation has faster access times for this scenario. 
+Still, the move-to-front approach is just a heuristic, for there are access sequences 
+where using the move-to-front approach is slower than simply keeping the favorites list ordered by access counts.
+
+MTF : Move To Front
+"""
+class FavouritesListMTF(FavouritesList):
+    """List of elements ordered with move-to-front heuristic."""
+    # override move up to provide move-to-front semantics
+    def _move_up(self, p):
+        """Move accessed item at Position p to front of list."""
+        if p != self._data.first():
+            self._data.add_first(self._data.delete(p))              # remove or delete it from initial place and reinsert in new position
+
+    # override top because list is no longer sorted
+    def top(self, k):
+        """Generate sequence of top k elements in terms of access count."""
+        if not 1 <= k <= len(self):
+            raise ValueError('Illegal value for k')
+        
+        # making a copy of the original list
+        temp = PositionalList()
+        for item in self._data:
+            temp.add_last(item)
+
+        # repeatedly find, report, and remove element with largest count
+        for j in range(k):
+            # find and report next highest from temp
+            highPos = temp.first()
+            walk = temp.after(highPos)
+            while walk is not None:
+                if walk.element()._count > highPos.element()._count:
+                    highPos = walk
+                walk = temp.after(walk)
+            # found the element with highest count
+            yield highPos.element()._value                          # report element to user
+            temp.delete(highPos)

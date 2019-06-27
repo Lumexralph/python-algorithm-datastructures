@@ -169,3 +169,107 @@ class PositionalList(_DoublyLinkedBase):
 
         return old_value
 
+
+"""
+An insertion sort implementation that operates on a PositionalList,
+relying on the same high-level algorithm in which each
+element is placed relative to a growing collection of
+previously sorted elements.
+"""
+def insertion_sort(p_list):
+    """Sort PositionalList of comparable elements into ascending order."""
+    if len(p_list) > 1:                             # list of length 0 or 1 is sorted
+        marker = p_list.first()
+        while marker != p_list.last():
+            pivot = p_list.after(marker)            # next item to place
+            value = pivot.element()
+            if value > marker.element():            # pivot is already sorted
+                marker = pivot                      # pivot becomes new marker
+            else:                                   # must relocate pivot to be before marker
+                walk = marker                       # find leftmost item greater than value
+                while (walk != p_list.first() and
+                        p_list.before(walk).element() > value):
+                    walk = p_list.before(walk)
+                p_list.delete(pivot)
+                p_list.add_before(walk, value)       # reinsert value before walk
+            
+
+"""
+Implement a favorites list by making use of a PositionalList for storage.
+
+If elements of the positional list were simply elements of the favorites list,
+we would be challenged to maintain access counts and to keep the proper count
+with the associated element as the contents of the list are reordered.
+We use a general object-oriented design pattern, the composition pattern,
+in which we define a single object that is composed of two or more other objects.
+"""
+class FavouritesList:
+    """List of elements ordered from most frequently accessed to least."""
+    
+    class _Item:
+         # slot is used because of
+         # 1. faster attribute access.
+         # 2. space savings in memory.
+         # ref: https://stackoverflow.com/questions/472000/usage-of-slots
+        __slots__ = '_value', '_count'
+
+        def __init__(self, e):
+            self._value = e                             # the user s element
+            self._count = 0                             # access count is initially zero
+        
+    def _find_position(self, e):
+        """Search for element e and return its Position (or None if not found)."""
+        walk = self._data.first()
+        while walk is not None and walk.element()._value != e:
+            walk = self._data.after(walk)
+        
+        return walk
+
+    def _move_up(self, p):
+        """Move item at Position p earlier in the list based on access count."""
+        if p == self._data.first():
+            count = p.element()._count
+            walk = self._data.before(p)
+            if count > walk.element()._count:                              # must shift forward
+                while (walk != self._data.first() and
+                        count > self._data.before(walk).element()._count):
+                    walk = self._data.before(walk)
+
+                self._data.add_before(walk, self._data.delete(p))           # delete/reinsert
+    
+    def __init__(self):
+        """Create an empty list of favorites."""
+        self._data = PositionalList()                                       # list of Item instances
+
+    def __len__(self):
+        """Return number of entries on favorites list."""
+        return len(self._data)
+    
+    def is_empty(self):
+        """Return True if list is empty."""
+        return len(self._data) == 0
+    
+    def access(self, e):
+        """Access element e, thereby increasing its access count."""
+        p = self._find_position(e)                                          # try to locate existing element
+        if p is None:
+            new_item = self._Item(e)
+            p = self._data.add_last(new_item)                               # if new, place at end of the list
+        p.element()._count += 1                                             # always increment count
+        self._move_up(p)                                                    # consider moving forward
+
+    def remove(self, e):
+        """Remove element e from the list of favorites."""
+        p = self._find_position(e)                                          # try to locate existing element
+        if p is not None:
+            self._data.delete(p)                                            # delete if found
+    
+    def top(self, k):
+        """Generate sequence of top k elements in terms of access count."""
+        if not 1 <= k <= len(self):
+            raise ValueError('Illegal value for k')
+        walk = self._data.first()
+        for j in range(k):
+            item = walk.element()                                           # element of list is Item
+            yield item._value                                               # using the customized __iter__ method
+            walk = self._data.after(walk)

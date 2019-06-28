@@ -1,6 +1,6 @@
 """Although the Python list class provides a highly optimized implementation
-of dy- namic arrays, upon which we rely for the remainder of this book,
-it is instructive to see how such a class might be implemented."""
+of dynamic arrays,it is instructive to see how such a class might be implemented.
+"""
 
 # The key is to provide means to grow the array
 # that stores the elements of a list

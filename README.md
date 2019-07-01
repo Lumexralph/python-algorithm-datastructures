@@ -1,13 +1,14 @@
 # Python Algorithms and Data Structures
 
 
-This repository contains Pythin based examples of many
+This repository contains Python based examples of many
 popular algorithms and data structure I created while studying and doing
-exercises.
+exercises. Some modules will contain repeated code, it was done just to have
+each module as a standalone unit without dependencies
 
-Each algorithm and data structure has its own separate README
-with related explanations and links for further reading (including ones
-to YouTube videos).
+Each algorithm and data structure will have its own separate README
+with related explanations and links for further reading .
+[This is yet to be fully implemented, I will appreciate any help if not done on time.]
 
 
 ## Data Structures

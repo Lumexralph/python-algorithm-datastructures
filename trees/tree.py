@@ -9,6 +9,8 @@ The tree ADT then supports accessor methods,
 allowing a user to navigate the various positions of a tree
 """
 
+from linked_list.linked_queue import LinkedQueue
+
 class Tree:
     """Abstract base class representing a tree structure."""
 
@@ -48,6 +50,11 @@ class Tree:
     def __len__(self):
         """Return the total number of elements in the tree."""
         raise NotImplementedError('must be implemented by subclass')
+    
+    def __iter__(self):
+        """Generate an iteration of the tree's element"""
+        for p in self.positions():                  # use same order as positions()
+            yield p.element()
 
     # concrete methods implemented
     def is_root(self, p):
@@ -91,3 +98,43 @@ class Tree:
         if p is None:
             p = self.root()
         return self._height2(p)
+
+    # ========= Traversal of the tree methods ==========
+    def preorder(self):
+        """Generate a preorder iteration of positions in the tree."""
+        if not self.is_empty():
+            for p in self._subtree_preorder(self.root()):       # start the recursive traversal
+                yield p
+
+    def _subtree_preorder(self, p):
+        """Generate a preorder iteration of positions in subtree rooted at p"""
+        yield p                                                # visit the root p first
+        for c in self.children(p):                             # for each child of p
+            for other in self._subtree_preorder(c):            # do a preorder of c's subtree
+                yield other
+
+    def postorder(self):
+        """Generate a postorder iteration of positions in the tree."""
+        if not self.is_empty():
+            for p in self._subtree_postorder(self.root()):      # start the recursion
+                yield p
+
+    def _subtree_postorder(self, p):
+        """Generate a postorder iteration of positions in subtree rooted at p."""
+        for c in self.children(p):
+            for other in self._subtree_postorder(c):
+                yield other                                     # yielding each child to our caller
+        yield p                                                 # visit p after the subtrees
+
+    def breadthfirst(self):
+        """Generate a breadth-first iteration of the positions of the tree."""
+        if not self.is_empty():
+            fringe = LinkedQueue()                              # known positions not yet yielded
+            fringe.enqueue(self.root())                         # starting with the root on the queue
+            while not fringe.is_empty():
+                p = fringe.dequeue()                            # remove from front of the queue
+                yield p                                         # report the position
+                for c in self.children(p):                      # get the children of the current node/position
+                    fringe.enqueue(c)                           # add children to back of queue
+    
+    

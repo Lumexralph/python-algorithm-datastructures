@@ -38,7 +38,3 @@ class BinaryTree(Tree):
             yield self.left_child(p)
         if self.right_child(p) is not None:
             yield self.right_child(p)
-
-
-
-

@@ -1,4 +1,4 @@
-from binary_tree import BinaryTree
+from trees.binary_tree import BinaryTree
 
 
 class LinkedBinaryTree(BinaryTree):
@@ -183,6 +183,29 @@ class LinkedBinaryTree(BinaryTree):
             node._right = t2._root
             t2._root = None                    # set t1 instance to empty
             t2._size = 0
+
+    def inorder(self):
+        """Generate an inorder iteration of positions in the tree."""
+        if not self.is_empty():
+            for p in self._subtree_inorder(self.root()):
+                yield p
+
+    def _subtree_inorder(self, p):
+        """Generate an inorder iteration of positions in subtree rooted at p."""
+        if self.left(p) is not None:               # if left child exists, traverse its subtree
+            for other in self._subtree_inorder(self.left(p)):
+                yield other
+        yield p                                    # visit p between its subtrees
+        if self.right(p):                          # if right child exists, traverse its subtree
+            for other in self._subtree_inorder(self.right(p)):
+                yield other
+
+    def positions(self):                         # override inherited version to make inorder the default
+        """Generate an iteration of the tree s positions."""
+        return self.inorder()                    # make inorder the default
+
+
+
 
 
 

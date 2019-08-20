@@ -78,7 +78,7 @@ class PositionalList(_DoublyLinkedBase):
         def __eq__(self, other):
             """Return True if other is a Position representing the same location."""
             return type(other) is type(self) and other._node is self._node
-        
+
         def __ne__(self, other):
             """Return True if other does not represent the same location."""
             return not(self == other)
@@ -88,13 +88,13 @@ class PositionalList(_DoublyLinkedBase):
 
         if not isinstance(p, self.Position):
             raise TypeError('position p must be a proper Position type')
-        
+
         if p._container is not self:
             raise ValueError('p does not belong to this container')
-        
+
         if p._node._next is None:
             raise ValueError('p is no longer valid')
-        
+
         return p._node
 
     def _make_position(self, node):
@@ -107,7 +107,7 @@ class PositionalList(_DoublyLinkedBase):
     def first(self):
         """Return the first Position in the list (or None if list is empty)."""
         return self._make_position(self._header._next)
-    
+
     def last(self):
         """Return the last Position in the list (or None if list is empty)."""
         return self._make_position(self._trailer._prev)

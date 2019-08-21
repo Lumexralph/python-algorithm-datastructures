@@ -1,5 +1,9 @@
 """Module containing the implementation"""
 
+class Empty(Exception):
+    """Error attempting to access an element from an empty container."""
+    pass
+
 
 class PriorityQueueBase:
     """Abstract base class for a priority queue"""

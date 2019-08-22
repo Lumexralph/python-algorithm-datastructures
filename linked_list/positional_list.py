@@ -55,7 +55,7 @@ class _DoublyLinkedBase:
         successor._prev = predecessor
         self._size -= 1
         element = node._element                             # record the deleted element
-        node._prev = node.next = node._element = None       # clean uo the node to be deleted and leave for garbage collection
+        node._prev = node._next = node._element = None       # clean uo the node to be deleted and leave for garbage collection
 
         return element
 

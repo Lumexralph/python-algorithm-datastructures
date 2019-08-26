@@ -10,3 +10,24 @@ There are other situations in which a “first come, first serve” policy might
 This is a collection of prioritized elements that allows arbitrary element insertion, and allows the removal of the element that has first priority. When an element is added to a priority queue, the user designates its priority by providing an associated key.
 
 ![Operations in a priority Queue - Python](p_queue.png)
+
+
+## Implemeneted Types
+
+ - Unsorted Priority Queue with dffferent Big O notation
+
+ - Sorted Priority Queue
+
+### Comparing the Two List-Based Implementations
+
+The running times of the methods of a priority queue
+realized by means of a sorted and unsorted list respectively.
+We see an interesting trade- off when we use a list to implement the priority queue ADT. An unsorted list supports fast insertions but slow queries and deletions, whereas a sorted list allows fast queries and deletions, but slow insertions.
+
+Operation | Unsorted List | Sorted List
+------------ | ------------- | ------------
+len | O(1) | O(1)
+is_empty | O(1) | O(1)
+add | O(1) | O(n)
+min | O(n) | O(1)
+remove min | O(n) | O(1)

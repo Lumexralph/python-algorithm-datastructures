@@ -10,3 +10,19 @@ There are other situations in which a “first come, first serve” policy might
 This is a collection of prioritized elements that allows arbitrary element insertion, and allows the removal of the element that has first priority. When an element is added to a priority queue, the user designates its priority by providing an associated key.
 
 ![Operations in a priority Queue - Python](p_queue.png)
+
+## Implementation
+
+- Using  unsorted list
+- Using sorted list
+- Using Binary Heap
+
+### Binary Heap
+
+It is a binary tree that stores collection of items at its positions and satisfies two additional properties:
+a relational property defined in terms of the way keys are stored in T and a structural property defined in terms of the shape of T itself
+
+![Example of a heap storing 13 entries with integer keys. The last position
+is the one storing entry (13,W )](binary_heap.png)
+Example of a heap storing 13 entries with integer keys. The last position
+is the one storing entry (13,W )

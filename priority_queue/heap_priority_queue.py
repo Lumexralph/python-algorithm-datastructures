@@ -52,11 +52,33 @@ class HeapPriorityQueue(PriorityQueueBase):
                 # recur at the small_child's position till end of the tree
                 self._bubble_downheap(small_child)
 
+    def _heapify(self):
+        # start at PARENT of last leaf, index of parent
+        start = self._parent(len(self) - 1)
+
+        # loop through the tree to the and include the tree
+        # start from the end of the tree, the deepest level
+        for j in range(start, -1, -1):
+            # bubble down the heap as the case applies
+            self._bubble_downheap(j)
+
+
     # ----------- public behaviours or operations --------
 
-    def __init__(self):
-        """Create a new empty Priority Queue."""
-        self._data = []
+    def __init__(self, contents=()):
+        """Create a new empty Priority Queue.
+
+        By default, queue will be empty. If contents is given, it should be as an
+        iterable sequence of (k,v) tuples specifying the initial contents. This optional implementation is
+        needed because we might want to start with some initial entries
+        """
+        # empty by default
+        self._data = [self._Item(k, v) for k, v in contents]
+
+        if len(self._data) > 1:
+            # Needed to create the heap to attain the heap-sort
+            # order property
+            self._heapify()
 
     def __len__data(self):
         """Return the number of items in the priority queue."""
